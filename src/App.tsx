@@ -26,7 +26,7 @@ const App: React.FC = () => {
         setPokemons((p) => [...p, poke.data])
       })
     }
-getPokemon();
+getPokemon(); //test putain
   }, [])
   
 
