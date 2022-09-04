@@ -1,42 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios"
 import './App.css';
-//import { Interface } from 'readline';
-import PokemonCollection from './components/PokemonCollection';
-import { Pokemon } from './interface';
+import Navbar from './components/Navbar';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import Footer from './components/Footer';
 
-interface Pokemons{
-  name : string,
-  url : string
 
-}
 
-const App: React.FC = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  
-  useEffect(() => {
-  async function getPokemon() {
-      //recupere la liste de 20 pokemons
-      const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=20&offset=0");
-      console.log(res.data.results);
-      console.log("nique ta mere pour voir")
-
-      res.data.results.forEach(async (pokemon: Pokemons) => {
-        const poke = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
-        setPokemons((p) => [...p, poke.data])
-      })
-    }
-getPokemon(); //test putain
-  }, [])
-  
-
+const App = () => {
   return (
-    <div className="App">
-      <header className="pokemon-header">
-        POKEDEX
-      </header>
-    <PokemonCollection pokemons={pokemons}/>
+    <Router>
+    <div className="App bg-indigo-200">
+      <Navbar/>
+        <Routes>
+        <Route path='/login' element={<LoginScreen />} />
+        <Route path='/signup' element={<SignupScreen />} />
+        <Route path='/favorites' element={<FavoritesScreen />} />
+        <Route path='/' element={<HomeScreen />} />
+        </Routes>
+        <Footer />
     </div>
+    </Router>
   );
 }
 
