@@ -6,11 +6,14 @@ import RegisterSuccess from '../components/RegisterSuccess';
 
 const SignupScreen = () => {
   let navigate = useNavigate()
-  const[submitted, setSubmitted] = useState(false)
-
+  const[success, setSuccess] = useState<Boolean>(false)
+  const[fail, setFail] = useState<Boolean>(false)
+ 
   const submitHandler = async (event: { preventDefault: () => void; currentTarget: any; }) => {
   
     event.preventDefault();
+
+  
     const form = event.currentTarget;
   
     const email = form.elements.email.value
@@ -28,18 +31,14 @@ const SignupScreen = () => {
     }
    
     try{
-      const _ = await fetch('http://localhost:3030/auth/signup',options)
+      const req = await fetch('http://localhost:3030/auth/signup',options)
   }catch(err){
+      setFail(!fail)
       console.error(err);
     };
-    setSubmitted(true);
-    if(submitted === true)
-    <RegisterSuccess text="User successfuly created!"/>
-    else if(submitted === false)
-    <RegisterFailed text="Failed to register user!"/>
-    //navigate('/login');
+    setSuccess(!success);
+    navigate('/login');
   }
-
 
   return (
     
@@ -124,6 +123,8 @@ const SignupScreen = () => {
           <a  href="/login">Already have an account? Sign in</a>
         </p>
       </form>
+      {success && <RegisterSuccess text={'Registered Successfully!'}/>}
+      {fail && <RegisterFailed text='Failed to register!'/>}
     </div>
   </div>
   )
