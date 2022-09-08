@@ -3,14 +3,16 @@ import {useNavigate} from 'react-router-dom'
 import RegisterFailed from '../components/RegisterFailed';
 import RegisterSuccess from '../components/RegisterSuccess';
 
-
 const SignupScreen = () => {
   let navigate = useNavigate()
   const[success, setSuccess] = useState<Boolean>(false)
   const[fail, setFail] = useState<Boolean>(false)
  
-  const submitHandler = async (event: { preventDefault: () => void; currentTarget: any; }) => {
+  // toast-configuration method,
+  // it is compulsory method.
   
+  const submitHandler = async (event: { preventDefault: () => void; currentTarget: any; }) => {
+    
     event.preventDefault();
 
   
@@ -32,12 +34,12 @@ const SignupScreen = () => {
    
     try{
       const req = await fetch('http://localhost:3030/auth/signup',options)
-  }catch(err){
+      setSuccess(!success);
+      navigate('/login');
+    }catch(err){
       setFail(!fail)
       console.error(err);
     };
-    setSuccess(!success);
-    navigate('/login');
   }
 
   return (
